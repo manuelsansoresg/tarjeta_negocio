@@ -23,6 +23,9 @@
                     <style>
                         .color-input { height: 42px; width: 100%; padding: 0; }
                     </style>
+                    @php
+                        $defaultBtnColor = '#c62828';
+                    @endphp
                     <form method="POST" action="{{ route('admin.social.store') }}">
                         @csrf
                         <div class="mb-2">
@@ -42,7 +45,7 @@
                         <!-- Icono eliminado: se asigna automáticamente según la plataforma -->
                         <div class="mb-2">
                             <label class="form-label">Color del botón</label>
-                            <input type="color" name="button_color" class="color-input" value="#25d366">
+                            <input type="color" name="button_color" class="color-input" value="{{ $defaultBtnColor }}">
                         </div>
                         <div class="mb-2">
                             <label class="form-label">Orden</label>
@@ -88,7 +91,7 @@
                                     <input type="url" name="url" value="{{ $link->url }}" class="form-control">
                                 </div>
                                 <div class="col-3">
-                                    <input type="color" name="button_color" value="{{ $link->button_color }}" class="color-input">
+                                    <input type="color" name="button_color" value="{{ $link->button_color ? $link->button_color : $defaultBtnColor }}" class="color-input">
                                 </div>
                                 <div class="col-3">
                                     <input type="number" name="order" value="{{ $link->order }}" class="form-control">

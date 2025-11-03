@@ -39,11 +39,11 @@
         }
         /* Subtítulo: tipografía y tamaño */
         .hero-sub{ font-family:'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif; color:#5a4a4a; opacity:.9; font-size: clamp(1.05rem, 2.8vw, 1.2rem); max-width:640px; margin:0 auto 1.5rem; }
-        .social-btn{border-radius:16px;padding:1rem 1.2rem;font-weight:700;display:flex;align-items:center;justify-content:center;gap:.75rem;color:#fff;text-decoration:none;transition: transform .15s ease, box-shadow .15s ease; background: var(--primary);} 
+        .social-btn{border-radius:16px;padding:1rem 1.2rem;font-weight:700;display:flex;align-items:center;justify-content:center;gap:.75rem;color:#fff;text-decoration:none;transition: transform .15s ease, box-shadow .15s ease; background: var(--btn-color, var(--primary));} 
         /* Borde ondulado arriba y abajo del botón */
         .social-btn{ position: relative; overflow: visible; }
         .social-btn::before, .social-btn::after{
-            content:""; position:absolute; left:0; right:0; height:12px; background: var(--primary);
+            content:""; position:absolute; left:0; right:0; height:12px; background: var(--btn-color, var(--primary));
             /* Máscara con círculos repetidos para generar las ondas */
             -webkit-mask: radial-gradient(6px at 6px 6px, #000 6px, transparent 6px) 0 0/12px 12px repeat-x;
             mask: radial-gradient(6px at 6px 6px, #000 6px, transparent 6px) 0 0/12px 12px repeat-x;
@@ -77,7 +77,8 @@
                 $platformKey = strtolower($link->platform);
                 $resolvedIcon = $link->icon_class ?: ($iconDefaults[$platformKey] ?? 'bi bi-link-45deg');
             @endphp
-            <a href="{{ $link->url }}" target="_blank" class="social-btn">
+            @php($btnColor = $link->button_color ?: $primary)
+            <a href="{{ $link->url }}" target="_blank" class="social-btn" style="--btn-color: {{ $btnColor }};">
                 <span class="icon-circle"><i class="{{ $resolvedIcon }}"></i></span>
                 <span>{{ ucfirst($link->platform) }}</span>
             </a>
