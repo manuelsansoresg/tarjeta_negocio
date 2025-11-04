@@ -20,7 +20,7 @@ class SocialLinkController extends Controller
     {
         $data = $request->validate([
             'platform' => ['required','string','max:50'],
-            'url' => ['required','url'],
+            'url' => ['required'],
             'icon_class' => ['nullable','string','max:100'],
             'button_color' => ['nullable','string','max:20'],
             'order' => ['nullable','integer'],
@@ -56,7 +56,7 @@ class SocialLinkController extends Controller
     {
         $data = $request->validate([
             'platform' => ['required','string','max:50'],
-            'url' => ['required','url'],
+            'url' => ['required'],
             'icon_class' => ['nullable','string','max:100'],
             'button_color' => ['nullable','string','max:20'],
             'order' => ['nullable','integer'],
