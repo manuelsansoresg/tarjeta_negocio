@@ -78,7 +78,7 @@
                 $resolvedIcon = $link->icon_class ?: ($iconDefaults[$platformKey] ?? 'bi bi-link-45deg');
             @endphp
             @php($btnColor = $link->button_color ?: $primary)
-            <a href="{{ $link->url }}" target="_blank" class="social-btn" style="--btn-color: {{ $btnColor }};">
+            <a href="{{ $link->url }}"  class="social-btn" style="--btn-color: {{ $btnColor }};">
                 <span class="icon-circle"><i class="{{ $resolvedIcon }}"></i></span>
                 <span>{{ ucfirst($link->platform) }}</span>
             </a>
