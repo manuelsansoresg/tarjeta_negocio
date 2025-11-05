@@ -31,8 +31,14 @@ class BusinessProfileController extends Controller
         if (!$profile) { $profile = new BusinessProfile(); }
 
         if ($request->hasFile('logo')) {
-            $path = $request->file('logo')->store('public');
-            $profile->logo_path = Storage::url($path);
+            $file = $request->file('logo');
+            $extension = $file->getClientOriginalExtension();
+            $filename = 'logo_' . uniqid() . '.' . $extension;
+            $destination = public_path('images');
+            // Mueve el archivo directamente a public/images
+            $file->move($destination, $filename);
+            // Guarda una URL accesible pública
+            $profile->logo_path = asset('images/' . $filename);
         }
 
         $profile->title = $data['title'] ?? $profile->title;
