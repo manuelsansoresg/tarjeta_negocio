@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\BusinessProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class BusinessProfileController extends Controller
 {
@@ -24,7 +25,8 @@ class BusinessProfileController extends Controller
             'secondary_color' => ['required','string','max:20'],
             'accent_color' => ['required','string','max:20'],
             'background_color' => ['required','string','max:20'],
-            'logo' => ['nullable','image','max:2048'],
+            // Restringe a formatos de imagen seguros y tamaño máximo 2MB
+            'logo' => ['nullable','file','mimes:jpg,jpeg,png,webp','max:2048'],
         ]);
 
         $profile = BusinessProfile::first();
@@ -32,8 +34,20 @@ class BusinessProfileController extends Controller
 
         if ($request->hasFile('logo')) {
             $file = $request->file('logo');
-            $extension = $file->getClientOriginalExtension();
-            $filename = 'logo_' . uniqid() . '.' . $extension;
+            // Validación adicional: asegura que realmente sea una imagen
+            $tmpPath = $file->getPathname();
+            $imageInfo = @getimagesize($tmpPath);
+            if ($imageInfo === false) {
+                return back()->withErrors(['logo' => 'El archivo subido no es una imagen válida.'])->withInput();
+            }
+
+            $extension = strtolower($file->getClientOriginalExtension());
+            $safeExtensions = ['jpg','jpeg','png','webp'];
+            if (!in_array($extension, $safeExtensions, true)) {
+                return back()->withErrors(['logo' => 'Extensión no permitida. Usa JPG, JPEG, PNG o WEBP.'])->withInput();
+            }
+
+            $filename = 'logo_' . Str::uuid()->toString() . '.' . $extension;
             $destination = public_path('images');
             // Mueve el archivo directamente a public/images
             $file->move($destination, $filename);

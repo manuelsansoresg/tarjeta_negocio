@@ -25,7 +25,8 @@ Auth::routes(['register' => false]);
 // Redirige el home al dashboard admin para unificar la experiencia
 Route::get('/home', function () { return redirect()->route('admin.dashboard'); })->name('home');
 
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+// Protecciones adicionales: rate limiting en rutas de administración
+Route::middleware(['auth','throttle:30,1'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/profile', [BusinessProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [BusinessProfileController::class, 'update'])->name('profile.update');
